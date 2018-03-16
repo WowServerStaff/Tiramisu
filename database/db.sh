@@ -8,8 +8,19 @@ cd sql/
 mysql -u root < create_mysql.sql
 
 wget $TCDB_FULL
-7z x *.7z
+
+if [$? -eq 0]; then
+  7z x *.7z
+  rm -rf TDB_full_*.7z
+else
+  echo "### TDB archive not found on the Trinity Github ###"
+  echo "Using local archive..."
+fi
 
 mv $TCDB_FOLDER/ tdb/
 
-rm -rf TDB_full_*.7z
+# populate db
+cat tdb/TDB_full_world_*.sql | mysql -u root -D world
+
+# update realmlist
+cat sql/update_realmlist.sql | mysql -u root -D auth
