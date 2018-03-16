@@ -3,12 +3,8 @@
 # build
 docker build -t trinitycore ./server/
 
-# use the database script before this operation (if first time)
-# populate db
-cat database/tdb/TDB_full_world_*.sql | mysql -u root -D world
-
-# update realmlist
-cat database/sql/update_realmlist.sql | mysql -u root -D auth
+# database script
+./database/db.sh
 
 # run
 docker run --net="host" --name tiramisu-auth -ti -d -p 3724:3724 trinitycore
