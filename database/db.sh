@@ -3,13 +3,13 @@
 TCDB_FULL=https://github.com/TrinityCore/TrinityCore/releases/download/TDB335.63/TDB_full_335.63_2017_04_18.7z
 TCDB_FOLDER=TDB_full_335.63_2017_04_18
 
-cd sql/
+cd database/sql/
 
 mysql -u root < create_mysql.sql
 
 wget $TCDB_FULL
 
-if [$? -eq 0]; then
+if [ $? -eq 0 ]; then
   7z x *.7z
   rm -rf TDB_full_*.7z
 else
@@ -23,4 +23,7 @@ mv $TCDB_FOLDER/ tdb/
 cat tdb/TDB_full_world_*.sql | mysql -u root -D world
 
 # update realmlist
-cat sql/update_realmlist.sql | mysql -u root -D auth
+cat update_realmlist.sql | mysql -u root -D auth
+
+# return to base server dir
+cd ../..
